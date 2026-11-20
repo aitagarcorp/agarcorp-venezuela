@@ -4,145 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Agarcorp de Venezuela · Servicios Especializados</title>
-<meta name="description" content="Agarcorp de Venezuela C.A.: fabricantes especialistas en medición y control de procesos. Servicios especializados y productos para la industria del petróleo y gas.">
+<meta name="description" content="Agarcorp de Venezuela C.A.: fabricantes especialistas en medición y control de procesos. Expo Venezuela Oriente 2026 · Stand 65.">
 <meta property="og:title" content="Agarcorp de Venezuela · Servicios Especializados">
-<meta property="og:description" content="Fabricantes especialistas en medición y control de procesos para la industria del petróleo y gas. Expo Venezuela Oriente 2026 · Stand 65.">
+<meta property="og:description" content="Agarcorp de Venezuela C.A.: fabricantes especialistas en medición y control de procesos. Expo Venezuela Oriente 2026 · Stand 65.">
 <meta property="og:image" content="https://aitagarcorp.github.io/agarcorp-venezuela/img/portada.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#06112b">
-<!-- Brochure digital al que lleva el QR de la tarjeta (tools/tarjeta_qr/generar.py, 20 nov 2026). Página estática: se publica tal cual. -->
-<style>
-@font-face{font-family:"Archivo";src:url("fonts/Archivo.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
-@font-face{font-family:"Sora";src:url("fonts/Sora.woff2") format("woff2");font-weight:100 800;font-display:swap}
-:root{--brand:#1a2b55;--brand2:#0a47a9;--deep:#06112b;--cyan:#38c6ff;--accent:#9ccc3c;--ink:#16202c;--ink2:#2c3a4a;--muted:#5b6878;--line2:#e3e8ee;--bg:#eef1f5}
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{font-family:"Archivo",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
-img{max-width:100%;display:block}
-
-.hero{position:relative;overflow:hidden;color:#fff;padding:28px 20px 34px;background:linear-gradient(160deg,#0a47a9 0%,#132a66 45%,#06112b 100%)}
-.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(94,225,255,.08) 0 1px,transparent 1px 22px),
-  repeating-linear-gradient(90deg,rgba(94,225,255,.08) 0 1px,transparent 1px 22px)}
-.hero::after{content:"";position:absolute;inset:0;opacity:.5;background:linear-gradient(160deg,#38c6ff,#0a47a9 60%);clip-path:polygon(78% 0,84% 0,44% 100%,38% 100%)}
-.hero>*{position:relative;z-index:1;max-width:760px;margin-left:auto;margin-right:auto}
-.logo{background:#fff;border-radius:18px;padding:14px 22px;width:max-content;max-width:100%;box-shadow:0 12px 30px rgba(0,0,0,.35)}
-.logo img{height:74px;width:auto}
-h1{font-family:"Sora";font-weight:800;font-size:clamp(25px,7vw,40px);line-height:1.12;margin-top:22px;letter-spacing:-.01em}
-h1 em{display:block;font-style:normal;color:var(--cyan);font-size:.58em;margin-top:8px;letter-spacing:0}
-.hero p{margin-top:12px;color:#d6efff;font-size:16px;max-width:52ch}
-.chip{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:"Sora";font-weight:700;font-size:clamp(10.5px,3.1vw,13px);letter-spacing:.03em;
-  padding:8px 8px 8px 14px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(56,198,255,.55);white-space:nowrap;max-width:100%}
-.chip b{background:var(--accent);color:var(--deep);border-radius:999px;padding:3px 10px}
-
-main{max-width:760px;margin:0 auto;padding:0 16px 40px}
-.divs{display:grid;gap:10px;margin-top:-18px;position:relative;z-index:2}
-.div{background:#fff;border-radius:14px;padding:14px 16px;border-left:5px solid var(--brand2);box-shadow:0 6px 18px rgba(16,32,60,.08)}
-.div h2{font-family:"Sora";font-size:15px;font-weight:800;color:var(--brand);letter-spacing:.02em}
-.div p{font-size:14px;color:var(--ink2);margin-top:2px}
-.div:nth-child(2){border-left-color:var(--cyan)}
-.div:nth-child(3){border-left-color:var(--accent)}
-
-.tit{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:30px 2px 12px}
-.tit h2{font-family:"Sora";font-weight:800;font-size:20px;color:var(--brand)}
-.tit span{font-size:13px;color:var(--muted);white-space:nowrap}
-.pags{display:grid;gap:14px}
-.pag{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(16,32,60,.12);position:relative}
-.pag img{width:100%;height:auto;aspect-ratio:16/9;background:#dfe6ee}
-.pag small{position:absolute;right:8px;bottom:8px;font:700 11px "Sora";color:#fff;background:rgba(6,17,43,.6);padding:3px 8px;border-radius:999px}
-.ayuda{font-size:13px;color:var(--muted);margin:0 2px 12px}
-
-.bajar{display:flex;align-items:center;justify-content:center;gap:12px;margin:26px 0 0;padding:16px 20px;border-radius:14px;text-decoration:none;
-  font-family:"Sora";font-weight:800;font-size:16px;letter-spacing:.04em;color:#fff;background:linear-gradient(135deg,var(--brand2),var(--brand));
-  border-left:6px solid var(--accent);box-shadow:0 12px 28px rgba(10,71,169,.3)}
-.bajar svg{width:24px;height:24px}
-.bajar small{font-weight:600;opacity:.8;font-size:12px}
-
-footer{background:#fff;border-top:1px solid var(--line2);padding:22px 16px 30px;text-align:center}
-footer .lbl{font:700 11px "Sora";letter-spacing:.14em;color:var(--muted)}
-.aliados{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 22px;margin-top:14px}
-.aliados img{height:40px;width:auto;object-fit:contain}
-footer p{font-size:12px;color:var(--muted);margin-top:18px}
-
-/* visor a pantalla completa al tocar una página (con zoom nativo de dos dedos) */
-.visor{position:fixed;inset:0;z-index:20;background:#02070c;display:none;overflow:auto;-webkit-overflow-scrolling:touch}
-.visor.on{display:flex;align-items:center}
-.visor img{width:100%;height:auto;margin:auto}
-.visor button{position:fixed;top:12px;right:12px;width:46px;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(6,17,43,.8);color:#fff;font-size:24px}
-</style>
+<link rel="icon" href="img/icono.png">
+<!-- Generada por tools/tarjeta_qr/generar.py (versión "servicios"). Página estática: se publica tal cual en https://aitagarcorp.github.io/agarcorp-venezuela/ -->
+<link rel="stylesheet" href="web.css">
 </head>
 <body>
-<header class="hero">
-  <div class="logo"><img src="img/logo-agarcorp.png" alt="Agarcorp de Venezuela"></div>
-  <h1>Agarcorp de Venezuela C.A.<em>Fabricantes especialistas en medición y control de procesos</em></h1>
-  <p>Servicios especializados y productos para la industria del petróleo y gas.</p>
-  <div class="chip">EXPO VENEZUELA ORIENTE 2026 <b>STAND 65</b></div>
-</header>
-
-<main>
-  <section class="divs" aria-label="Divisiones">
-    <article class="div"><h2>Artificial Lift Systems</h2><p>Sistemas de levantamiento artificial.</p></article>
-    <article class="div"><h2>Measurement &amp; Control Process</h2><p>Medición y control de procesos.</p></article>
-    <article class="div"><h2>Optimization &amp; Automation</h2><p>Optimización y automatización.</p></article>
-  </section>
-
-  <div class="tit"><h2>Servicios Especializados</h2><span>28 páginas</span></div>
-  <p class="ayuda">Toque una página para verla en grande y acercarla con dos dedos.</p>
-  <section class="pags" id="pags">
-    <figure class="pag"><img src="img/p01.webp" width="1600" height="900" alt="Servicios Especializados, página 1" decoding="async"><small>1</small></figure>
-    <figure class="pag"><img src="img/p02.webp" width="1600" height="900" alt="Servicios Especializados, página 2" decoding="async"><small>2</small></figure>
-    <figure class="pag"><img src="img/p03.webp" width="1600" height="900" alt="Servicios Especializados, página 3" loading="lazy" decoding="async"><small>3</small></figure>
-    <figure class="pag"><img src="img/p04.webp" width="1600" height="900" alt="Servicios Especializados, página 4" loading="lazy" decoding="async"><small>4</small></figure>
-    <figure class="pag"><img src="img/p05.webp" width="1600" height="900" alt="Servicios Especializados, página 5" loading="lazy" decoding="async"><small>5</small></figure>
-    <figure class="pag"><img src="img/p06.webp" width="1600" height="900" alt="Servicios Especializados, página 6" loading="lazy" decoding="async"><small>6</small></figure>
-    <figure class="pag"><img src="img/p07.webp" width="1600" height="900" alt="Servicios Especializados, página 7" loading="lazy" decoding="async"><small>7</small></figure>
-    <figure class="pag"><img src="img/p08.webp" width="1600" height="900" alt="Servicios Especializados, página 8" loading="lazy" decoding="async"><small>8</small></figure>
-    <figure class="pag"><img src="img/p09.webp" width="1600" height="900" alt="Servicios Especializados, página 9" loading="lazy" decoding="async"><small>9</small></figure>
-    <figure class="pag"><img src="img/p10.webp" width="1600" height="900" alt="Servicios Especializados, página 10" loading="lazy" decoding="async"><small>10</small></figure>
-    <figure class="pag"><img src="img/p11.webp" width="1600" height="900" alt="Servicios Especializados, página 11" loading="lazy" decoding="async"><small>11</small></figure>
-    <figure class="pag"><img src="img/p12.webp" width="1600" height="900" alt="Servicios Especializados, página 12" loading="lazy" decoding="async"><small>12</small></figure>
-    <figure class="pag"><img src="img/p13.webp" width="1600" height="900" alt="Servicios Especializados, página 13" loading="lazy" decoding="async"><small>13</small></figure>
-    <figure class="pag"><img src="img/p14.webp" width="1600" height="900" alt="Servicios Especializados, página 14" loading="lazy" decoding="async"><small>14</small></figure>
-    <figure class="pag"><img src="img/p15.webp" width="1600" height="900" alt="Servicios Especializados, página 15" loading="lazy" decoding="async"><small>15</small></figure>
-    <figure class="pag"><img src="img/p16.webp" width="1600" height="900" alt="Servicios Especializados, página 16" loading="lazy" decoding="async"><small>16</small></figure>
-    <figure class="pag"><img src="img/p17.webp" width="1600" height="900" alt="Servicios Especializados, página 17" loading="lazy" decoding="async"><small>17</small></figure>
-    <figure class="pag"><img src="img/p18.webp" width="1600" height="900" alt="Servicios Especializados, página 18" loading="lazy" decoding="async"><small>18</small></figure>
-    <figure class="pag"><img src="img/p19.webp" width="1600" height="900" alt="Servicios Especializados, página 19" loading="lazy" decoding="async"><small>19</small></figure>
-    <figure class="pag"><img src="img/p20.webp" width="1600" height="900" alt="Servicios Especializados, página 20" loading="lazy" decoding="async"><small>20</small></figure>
-    <figure class="pag"><img src="img/p21.webp" width="1600" height="900" alt="Servicios Especializados, página 21" loading="lazy" decoding="async"><small>21</small></figure>
-    <figure class="pag"><img src="img/p22.webp" width="1600" height="900" alt="Servicios Especializados, página 22" loading="lazy" decoding="async"><small>22</small></figure>
-    <figure class="pag"><img src="img/p23.webp" width="1600" height="900" alt="Servicios Especializados, página 23" loading="lazy" decoding="async"><small>23</small></figure>
-    <figure class="pag"><img src="img/p24.webp" width="1600" height="900" alt="Servicios Especializados, página 24" loading="lazy" decoding="async"><small>24</small></figure>
-    <figure class="pag"><img src="img/p25.webp" width="1600" height="900" alt="Servicios Especializados, página 25" loading="lazy" decoding="async"><small>25</small></figure>
-    <figure class="pag"><img src="img/p26.webp" width="1600" height="900" alt="Servicios Especializados, página 26" loading="lazy" decoding="async"><small>26</small></figure>
-    <figure class="pag"><img src="img/p27.webp" width="1600" height="900" alt="Servicios Especializados, página 27" loading="lazy" decoding="async"><small>27</small></figure>
-    <figure class="pag"><img src="img/p28.webp" width="1600" height="900" alt="Servicios Especializados, página 28" loading="lazy" decoding="async"><small>28</small></figure>
-  </section>
-
-  <a class="bajar" href="servicios-especializados.pdf" download>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>DESCARGAR EL BROCHURE (PDF)<br><small>3,8 MB</small></span>
-  </a>
-</main>
-
-<footer>
-  <div class="lbl">JUNTO A NUESTROS ALIADOS</div>
-  <div class="aliados">
-    <img src="img/ally-gasmetro.png" alt="Gasmetro C.A."><img src="img/ally-premium.png" alt="Premium"><img src="img/ally-unico.png" alt="UNICO">
-    <img src="img/ally-valge.png" alt="VALGE"><img src="img/ally-ls.png" alt="LS Lifting Solutions">
-  </div>
-  <p>© Agarcorp de Venezuela C.A.</p>
-</footer>
-
-<div class="visor" id="visor"><img alt=""><button type="button" aria-label="Cerrar">×</button></div>
-<script>
-  const visor = document.getElementById("visor"), vimg = visor.querySelector("img");
-  document.getElementById("pags").addEventListener("click", (e) => {
-    const im = e.target.closest(".pag img"); if (!im) return;
-    vimg.src = im.currentSrc || im.src; vimg.alt = im.alt; visor.classList.add("on"); history.pushState({ visor: 1 }, "");
-  });
-  const cerrar = () => { visor.classList.remove("on"); vimg.removeAttribute("src"); };
-  visor.querySelector("button").addEventListener("click", () => history.back());
-  addEventListener("popstate", cerrar);
-</script>
+<div id="app"></div>
+<div class="ventana" id="ventana" hidden></div>
+<noscript><p style="padding:20px">Active JavaScript para ver el contenido.</p></noscript>
+<script src="datos.js"></script>
+<script src="web.js"></script>
 </body>
 </html>

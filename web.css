@@ -1,0 +1,130 @@
+/* Web para teléfono de las tarjetas QR (tools/tarjeta_qr/generar.py, 20 nov 2026): la usan las dos versiones,
+   "servicios" (brochure de Servicios Especializados) y "catalogo" (todo el catálogo de la tablet). */
+@font-face{font-family:"Archivo";src:url("fonts/Archivo.woff2") format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Sora";src:url("fonts/Sora.woff2") format("woff2");font-weight:100 800;font-display:swap}
+:root{--brand:#1a2b55;--brand2:#0a47a9;--deep:#06112b;--cyan:#38c6ff;--accent:#9ccc3c;--ink:#16202c;--ink2:#2c3a4a;--muted:#5b6878;--line2:#e3e8ee;--bg:#eef1f5}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Archivo",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+body.tapado{overflow:hidden}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+
+/* ---------- cabecera de la portada ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;padding:26px 18px 46px;background:linear-gradient(160deg,#0a47a9 0%,#132a66 45%,#06112b 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(94,225,255,.08) 0 1px,transparent 1px 22px),
+  repeating-linear-gradient(90deg,rgba(94,225,255,.08) 0 1px,transparent 1px 22px)}
+.hero::after{content:"";position:absolute;inset:0;opacity:.5;background:linear-gradient(160deg,#38c6ff,#0a47a9 60%);clip-path:polygon(80% 0,86% 0,46% 100%,40% 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .logo{background:#fff;border-radius:18px;padding:12px 20px;width:max-content;max-width:100%;margin:0 auto;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.hero .logo img{height:70px;width:auto}
+.hero h1{font-family:"Sora";font-weight:800;font-size:clamp(17px,6.1vw,34px);line-height:1.15;margin-top:20px;letter-spacing:-.015em;white-space:nowrap;text-align:center}
+.hero h2{font-family:"Sora";font-weight:700;color:var(--cyan);font-size:clamp(14px,4.3vw,21px);line-height:1.3;margin-top:8px;text-align:center}
+.chip{display:flex;align-items:center;justify-content:center;gap:8px;width:max-content;max-width:100%;margin:18px auto 0;font-family:"Sora";font-weight:700;
+  font-size:clamp(10.5px,3.1vw,13px);letter-spacing:.03em;white-space:nowrap;padding:8px 8px 8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(56,198,255,.55)}
+.chip b{background:var(--cyan);color:var(--deep);border-radius:999px;padding:3px 10px}
+
+main{max-width:760px;margin:0 auto;padding:0 14px 36px}
+
+/* botón principal de descarga (arriba del todo, montado sobre el borde de la cabecera) */
+.bajar{display:flex;align-items:center;gap:14px;margin:-26px 0 0;position:relative;z-index:2;padding:14px 18px;border-radius:14px;text-decoration:none;
+  color:#fff;background:linear-gradient(135deg,var(--brand2),var(--brand));border-left:6px solid var(--accent);box-shadow:0 12px 28px rgba(10,71,169,.35)}
+.bajar svg{width:28px;height:28px;flex:0 0 auto}
+.bajar b{display:block;font-family:"Sora";font-weight:800;font-size:15px;letter-spacing:.03em;line-height:1.25}
+.bajar small{display:block;font-size:12.5px;opacity:.85}
+
+.tit{font-family:"Sora";font-weight:800;font-size:19px;color:var(--brand);margin:28px 2px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.tit span{font-family:"Archivo";font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+
+/* divisiones */
+.divs{display:grid;gap:12px}
+.div{display:flex;align-items:center;gap:14px;background:#fff;border-radius:16px;padding:14px;border-left:5px solid var(--brand2);
+  box-shadow:0 6px 18px rgba(16,32,60,.08);text-decoration:none;color:inherit;min-height:96px}
+.div:nth-child(2){border-left-color:var(--cyan)}
+.div:nth-child(3){border-left-color:var(--accent)}
+.div .im{width:78px;height:78px;flex:0 0 auto;border-radius:12px;background:linear-gradient(160deg,#0a47a9,#06112b);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.div .im img{max-width:90%;max-height:90%;object-fit:contain;filter:drop-shadow(0 0 8px rgba(56,198,255,.45))}
+.div .tx{flex:1;min-width:0}
+.div h3{font-family:"Sora";font-size:15.5px;font-weight:800;color:var(--brand);line-height:1.25}
+.div p{font-size:13.5px;color:var(--ink2);margin-top:3px;line-height:1.4}
+.div small{display:block;font-family:"Sora";font-weight:700;font-size:11.5px;color:var(--brand2);margin-top:6px;letter-spacing:.03em}
+.flecha{width:22px;height:22px;flex:0 0 auto;color:var(--brand2)}
+
+/* tarjetas de documento / video / holograma (abren una ventana) */
+.lista{display:grid;gap:12px}
+.item{display:flex;gap:12px;align-items:center;background:#fff;border-radius:14px;padding:10px;box-shadow:0 6px 18px rgba(16,32,60,.08);
+  border:0;width:100%;text-align:left;color:inherit;text-decoration:none}
+.item .mini{position:relative;width:128px;flex:0 0 auto;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#dfe6ee}
+.item .mini img{width:100%;height:100%;object-fit:cover}
+.item .mini .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,17,43,.25)}
+.item .mini .play svg{width:36px;height:36px;color:#fff;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.item .tx{flex:1;min-width:0}
+.item b{display:block;font-family:"Sora";font-weight:700;font-size:14px;color:var(--brand);line-height:1.3}
+.item small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.item .abrir{font-family:"Sora";font-weight:700;font-size:12px;color:var(--brand2);margin-top:6px;display:inline-flex;align-items:center;gap:4px}
+/* presentación destacada (una sola, grande) */
+.item.grande{flex-direction:column;align-items:stretch;padding:0;overflow:hidden}
+.item.grande .mini{width:100%;border-radius:0}
+.item.grande .tx{padding:12px 14px 14px}
+.item.grande b{font-size:17px}
+
+/* grilla de marcas / productos y de hologramas */
+.grilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.caja{background:#fff;border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(16,32,60,.08);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px}
+.caja .im{height:74px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--bg);overflow:hidden}
+.caja .im img{max-height:64px;max-width:90%;object-fit:contain}
+.caja .im.oscuro{background:linear-gradient(160deg,#0a47a9,#06112b);height:120px}
+.caja .im.oscuro img{max-height:112px}
+.caja .im.foto img{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover}
+.caja .ini{font-family:"Sora";font-weight:800;font-size:26px;color:var(--brand2)}
+.caja b{font-family:"Sora";font-weight:700;font-size:13.5px;color:var(--brand);line-height:1.25}
+.caja small{font-size:12px;color:var(--muted);line-height:1.35}
+
+/* cabecera de las secciones interiores */
+.barra{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--deep);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.barra .atras{width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.barra .atras svg{width:22px;height:22px}
+.barra .migas{flex:1;min-width:0;font-family:"Sora";font-weight:700;font-size:12px;letter-spacing:.03em;color:#9fdcff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra .casa{height:34px;background:#fff;border-radius:8px;padding:3px 6px;flex:0 0 auto}
+.barra .casa img{height:28px;width:auto}
+.cab{background:#fff;border-radius:0 0 18px 18px;padding:18px 16px 18px;margin:0 -14px;box-shadow:0 6px 18px rgba(16,32,60,.06);display:flex;gap:14px;align-items:center}
+.cab .im{width:86px;height:86px;flex:0 0 auto;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.cab .im.oscuro{background:linear-gradient(160deg,#0a47a9,#06112b)}
+.cab .im img{max-width:92%;max-height:92%;object-fit:contain}
+.cab h1{font-family:"Sora";font-weight:800;font-size:21px;color:var(--brand);line-height:1.2}
+.cab .sub{font-family:"Sora";font-weight:700;font-size:12.5px;color:var(--brand2);margin-top:3px}
+.desc{font-size:14.5px;color:var(--ink2);margin:14px 2px 0}
+.vacio{font-size:14px;color:var(--muted);background:#fff;border-radius:12px;padding:16px;text-align:center}
+
+/* pie */
+footer{background:#fff;border-top:1px solid var(--line2);padding:22px 16px 30px;text-align:center}
+footer .lbl{font:700 11px "Sora";letter-spacing:.14em;color:var(--muted)}
+.aliados{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 22px;margin-top:14px}
+.aliados img{height:40px;width:auto;object-fit:contain}
+footer p{font-size:12px;color:var(--muted);margin-top:18px}
+
+/* ---------- ventana (documento, video u holograma) ---------- */
+.ventana{position:fixed;inset:0;z-index:30;background:#02070c;display:flex;flex-direction:column}
+.ventana[hidden]{display:none}
+.ventana .vb{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--deep);color:#fff;flex:0 0 auto;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.ventana .vb .cerrar{width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:26px;line-height:1;flex:0 0 auto}
+.ventana .vb .vt{flex:1;min-width:0}
+.ventana .vb .vt b{display:block;font-family:"Sora";font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ventana .vb .vt small{display:block;font-size:12px;color:#9fdcff}
+.ventana .vb .dl{display:flex;align-items:center;gap:6px;height:42px;padding:0 12px;border-radius:12px;background:linear-gradient(135deg,var(--brand2),var(--brand));
+  border-left:4px solid var(--accent);color:#fff;text-decoration:none;font-family:"Sora";font-weight:800;font-size:12.5px;flex:0 0 auto}
+.ventana .vb .dl svg{width:20px;height:20px}
+.ventana .cuerpo{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;position:relative}
+.paginas{display:grid;gap:10px;padding:10px;max-width:1100px;margin:0 auto}
+.paginas figure{position:relative;background:#0b1626;border-radius:8px;overflow:hidden}
+.paginas img{width:100%;height:auto}
+.paginas figcaption{position:absolute;right:8px;bottom:8px;font:700 11px "Sora";color:#fff;background:rgba(6,17,43,.65);padding:3px 8px;border-radius:999px}
+.ventana .pista{font-size:12.5px;color:#9fb8cc;text-align:center;padding:8px 10px 0}
+.ventana video{width:100%;max-height:100%;background:#000;display:block;margin:auto}
+.ventana .cuerpo.centro{display:flex;align-items:center}
+.ventana iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#02070c}
+.cargando{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#bdf1ff;font:700 14px "Sora";pointer-events:none}
+.cargando span{width:40px;height:40px;border-radius:50%;border:3px solid rgba(57,230,255,.25);border-top-color:var(--cyan);animation:gira 1s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
