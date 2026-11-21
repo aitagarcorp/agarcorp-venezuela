@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:RIVERA;MIGUEL;;;
+FN:MIGUEL RIVERA
+ORG:Agarcorp de Venezuela\, C.A.
+TITLE:Artificial Lift Systems Director
+TEL;TYPE=CELL,VOICE:+584248847898
+EMAIL;TYPE=INTERNET,WORK:miguel.rivera@agarven.com
+URL:https://www.agarven.com
+ADR;TYPE=WORK:;;Avenida Jesús Subero entre calles #12 y #13 Galpón #01;El Tigre;Anzoátegui;6050;Venezuela
+END:VCARD

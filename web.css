@@ -191,3 +191,13 @@ footer p{font-size:12px;color:var(--muted);margin-top:18px}
 .con-envio .ficha{--w:min(84vw,calc((100dvh - 310px) * .55),430px)}
 @supports not (height:100dvh){.con-envio .ficha{--w:min(84vw,calc((100vh - 330px) * .55),430px)}}
 @media (max-width:380px){.acciones>*{font-size:12.5px;gap:6px;padding:0 6px}.acciones svg{width:19px;height:19px}}
+/* Varias personas en "Contacto" (21 nov 2026): pestañas para elegir la tarjeta; cargos largos en letra algo menor */
+.personas{display:flex;gap:6px;width:min(100%,430px);padding:4px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+.personas button{flex:1;min-width:0;height:40px;border:0;border-radius:10px;background:transparent;color:#cfe6ff;font-family:"Sora";font-weight:700;font-size:13px;
+  cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.personas button.activa{background:var(--cyan);color:var(--deep);box-shadow:0 6px 16px rgba(56,198,255,.35)}
+.con-lista .ficha{--w:min(84vw,calc((100dvh - 312px) * .55),430px)}
+@supports not (height:100dvh){.con-lista .ficha{--w:min(84vw,calc((100vh - 332px) * .55),430px)}}
+@media (max-width:380px){.personas button{font-size:12px;padding:0 3px}}
+.persona p.largo{font-size:calc(var(--u)*4.25)}
+.contacto small .nw{white-space:nowrap}

@@ -87,13 +87,18 @@
     const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.dir);
     const correo = "mailto:" + c.email + (c.asunto ? "?subject=" + encodeURIComponent(c.asunto) : "");
     return `<div class="ficha${c.tel ? "" : " sin-tel"}" tabindex="0" role="button" aria-label="Tarjeta de ${esc(c.nombreTc)}: toque para girarla"><div class="giro">
-      <div class="cara frente">${frente}${marca}<div class="persona"><h3>${esc(c.nombre)}</h3><p>${esc(c.cargo)}</p></div>
+      <div class="cara frente">${frente}${marca}<div class="persona"><h3>${esc(c.nombre)}</h3><p${c.cargo.length > 28 ? ' class="largo"' : ""}>${esc(c.cargo)}</p></div>
         <ul class="datos">${fila("mail", c.email, correo)}${c.tel ? fila("tel", c.tel, c.telHref) : ""}${fila("web", c.web, c.url)}${fila("pin", c.dir, mapa)}</ul></div>
       <div class="cara reverso">${reverso}${marca}<div class="qrc"><img src="${c.qr}" alt="Código QR: guarda el contacto de ${esc(c.nombreTc)}"><i></i><i></i><i></i><i></i></div>
         <div class="web">${esc(c.web)}</div></div></div></div>`;
   }
-  const botonesContacto = () => (S.contactos || []).map((c) => `<a class="contacto${c.icono === "cv" ? " recluta" : ""}" href="#/c/${encodeURIComponent(c.id)}"><span class="ic">${ICO[c.icono] || ICO.tarjeta}</span>
-    <span class="tx"><b>${esc(c.etiqueta)}</b><small>${esc(c.sub)}</small></span>${ICO.flecha}</a>`).join("");
+  // un botón por grupo: "Contacto" (varias personas, se elige en la ventana) y "Reclutamiento"
+  const grupo = (c) => (S.contactos || []).filter((x) => x.grupo === c.grupo);
+  const botonesContacto = () => (S.contactos || []).filter((c, i, a) => a.findIndex((x) => x.grupo === c.grupo) === i).map((c) => {
+    const g = grupo(c), sub = g.length > 1 ? g.map((x) => `<span class="nw">${esc(x.nombreTc)}</span>`).join(" · ") : esc(c.sub);
+    return `<a class="contacto${c.icono === "cv" ? " recluta" : ""}" href="#/c/${encodeURIComponent(c.id)}"><span class="ic">${ICO[c.icono] || ICO.tarjeta}</span>
+    <span class="tx"><b>${esc(c.etiqueta)}</b><small>${sub}</small></span>${ICO.flecha}</a>`;
+  }).join("");
 
   // ------------------------------------------------------------------ páginas
   function portada() {
@@ -174,16 +179,33 @@
     // Guardar contacto = el mismo .vcf que guarda el QR. En Android se descarga y se abre con Contactos; en iPhone, al abrirlo
     // (sin "download") Safari muestra la ficha con "Crear contacto nuevo".
     const android = /Android/i.test(navigator.userAgent);
-    const correo = "mailto:" + c.email + (c.asunto ? "?subject=" + encodeURIComponent(c.asunto) : "");
-    abrirVentana(barraVentana(c.etiqueta, c.sub) + `<div class="cuerpo ficha-cuerpo${c.asunto ? " con-envio" : ""}"><div class="escena">${fichaContacto(c)}</div>
+    // si el grupo tiene varias personas, arriba de la tarjeta van unas pestañas para elegirla (cambia en el sitio, sin nueva entrada en el historial)
+    const g = grupo(c), varios = g.length > 1;
+    const sub = (x) => varios ? `${x.nombreTc} · ${x.cargo}` : x.sub;
+    abrirVentana(barraVentana(c.etiqueta, sub(c)) + `<div class="cuerpo ficha-cuerpo${c.asunto ? " con-envio" : ""}${varios ? " con-lista" : ""}">
+      ${varios ? `<div class="personas" role="tablist">${g.map((x) => `<button type="button" role="tab" data-id="${esc(x.id)}">${esc(x.nombreTc)}</button>`).join("")}</div>` : ""}
+      <div class="escena"></div>
       <p class="pista">Toque la tarjeta para girarla</p>
       <div class="acciones"><button class="girar" type="button">${ICO.girar}<span>Girar tarjeta</span></button>
-        <a class="guardar" href="${c.vcf}"${android ? ` download="${esc(c.archivo)}"` : ""}>${ICO.guardar}<span>Guardar contacto</span></a>
-        ${c.asunto ? `<a class="enviar" href="${correo}">${ICO.enviar}<span>Enviar currículum</span></a>` : ""}</div></div>`);
-    const f = ven.querySelector(".ficha"), girar = () => f.classList.toggle("vuelta");
-    f.addEventListener("click", (e) => { if (!e.target.closest("a")) girar(); });
-    f.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); girar(); } });
+        <a class="guardar">${ICO.guardar}<span>Guardar contacto</span></a>
+        ${c.asunto ? `<a class="enviar">${ICO.enviar}<span>Enviar currículum</span></a>` : ""}</div></div>`);
+    const escena = ven.querySelector(".escena"), guardar = ven.querySelector(".guardar"), enviar = ven.querySelector(".enviar");
+    let f = null; const girar = () => f.classList.toggle("vuelta");
+    function poner(x) {
+      escena.innerHTML = fichaContacto(x); f = escena.querySelector(".ficha");
+      f.addEventListener("click", (e) => { if (!e.target.closest("a")) girar(); });
+      f.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); girar(); } });
+      guardar.href = x.vcf; if (android) guardar.setAttribute("download", x.archivo);
+      if (enviar) enviar.href = "mailto:" + x.email + (x.asunto ? "?subject=" + encodeURIComponent(x.asunto) : "");
+      ven.querySelector(".vt small").textContent = sub(x);
+      ven.querySelectorAll(".personas button").forEach((b) => { const si = b.dataset.id === x.id; b.classList.toggle("activa", si); b.setAttribute("aria-selected", si); });
+    }
+    ven.querySelectorAll(".personas button").forEach((b) => b.addEventListener("click", () => {
+      const x = g.find((y) => y.id === b.dataset.id); if (!x || b.classList.contains("activa")) return;
+      poner(x); history.replaceState(history.state, "", "#/c/" + encodeURIComponent(x.id));
+    }));
     ven.querySelector(".girar").addEventListener("click", girar);
+    poner(c);
     return true;
   }
 
