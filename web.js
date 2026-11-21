@@ -14,6 +14,8 @@
     play: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="rgba(6,17,43,.55)"/><path d="M10 8l6 4-6 4z" fill="currentColor"/></svg>',
     girar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M18.5 2.8v4.1h-4.1M5.5 21.2v-4.1h4.1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     guardar: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M19 8v6M16 11h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    cv: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.5h8.5L19 7v14.5H6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M14 2.8V7.5h4.7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="10.5" cy="10.3" r="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M7.8 15.2c.5-1.4 1.5-2.1 2.7-2.1s2.2.7 2.7 2.1M9 18.5h7M15 11h1.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+    enviar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L21 3l-6.5 18-3-7.5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><path d="M11.5 13.5L21 3" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>',
     tarjeta: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="10.5" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 16c.6-1.6 1.9-2.4 3.5-2.4s2.9.8 3.5 2.4M14.5 10h4M14.5 13.5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   };
   // íconos de los datos de la tarjeta de contacto (en círculos azules, como la impresa)
@@ -83,14 +85,15 @@
       + '<polygon points="0,898 550,822 550,1000 0,1000" fill="url(#marino)"/>');
     const fila = (ico, txt, href) => `<li${ico === "pin" ? ' class="dir"' : ""}><span class="ic">${ICOC[ico]}</span>${href ? `<a href="${href}"${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ""}>${esc(txt)}</a>` : `<span>${esc(txt)}</span>`}</li>`;
     const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.dir);
-    return `<div class="ficha" tabindex="0" role="button" aria-label="Tarjeta de ${esc(c.nombreTc)}: toque para girarla"><div class="giro">
+    const correo = "mailto:" + c.email + (c.asunto ? "?subject=" + encodeURIComponent(c.asunto) : "");
+    return `<div class="ficha${c.tel ? "" : " sin-tel"}" tabindex="0" role="button" aria-label="Tarjeta de ${esc(c.nombreTc)}: toque para girarla"><div class="giro">
       <div class="cara frente">${frente}${marca}<div class="persona"><h3>${esc(c.nombre)}</h3><p>${esc(c.cargo)}</p></div>
-        <ul class="datos">${fila("mail", c.email, "mailto:" + c.email)}${fila("tel", c.tel, c.telHref)}${fila("web", c.web, c.url)}${fila("pin", c.dir, mapa)}</ul></div>
+        <ul class="datos">${fila("mail", c.email, correo)}${c.tel ? fila("tel", c.tel, c.telHref) : ""}${fila("web", c.web, c.url)}${fila("pin", c.dir, mapa)}</ul></div>
       <div class="cara reverso">${reverso}${marca}<div class="qrc"><img src="${c.qr}" alt="Código QR: guarda el contacto de ${esc(c.nombreTc)}"><i></i><i></i><i></i><i></i></div>
         <div class="web">${esc(c.web)}</div></div></div></div>`;
   }
-  const botonesContacto = () => (S.contactos || []).map((c) => `<a class="contacto" href="#/c/${encodeURIComponent(c.id)}"><span class="ic">${ICO.tarjeta}</span>
-    <span class="tx"><b>Contacto</b><small>${esc(c.nombreTc)} · ${esc(c.cargo)}</small></span>${ICO.flecha}</a>`).join("");
+  const botonesContacto = () => (S.contactos || []).map((c) => `<a class="contacto${c.icono === "cv" ? " recluta" : ""}" href="#/c/${encodeURIComponent(c.id)}"><span class="ic">${ICO[c.icono] || ICO.tarjeta}</span>
+    <span class="tx"><b>${esc(c.etiqueta)}</b><small>${esc(c.sub)}</small></span>${ICO.flecha}</a>`).join("");
 
   // ------------------------------------------------------------------ páginas
   function portada() {
@@ -171,10 +174,12 @@
     // Guardar contacto = el mismo .vcf que guarda el QR. En Android se descarga y se abre con Contactos; en iPhone, al abrirlo
     // (sin "download") Safari muestra la ficha con "Crear contacto nuevo".
     const android = /Android/i.test(navigator.userAgent);
-    abrirVentana(barraVentana("Contacto", `${c.nombreTc} · ${c.cargo}`) + `<div class="cuerpo ficha-cuerpo"><div class="escena">${fichaContacto(c)}</div>
+    const correo = "mailto:" + c.email + (c.asunto ? "?subject=" + encodeURIComponent(c.asunto) : "");
+    abrirVentana(barraVentana(c.etiqueta, c.sub) + `<div class="cuerpo ficha-cuerpo${c.asunto ? " con-envio" : ""}"><div class="escena">${fichaContacto(c)}</div>
       <p class="pista">Toque la tarjeta para girarla</p>
       <div class="acciones"><button class="girar" type="button">${ICO.girar}<span>Girar tarjeta</span></button>
-        <a class="guardar" href="${c.vcf}"${android ? ` download="${esc(c.archivo)}"` : ""}>${ICO.guardar}<span>Guardar contacto</span></a></div></div>`);
+        <a class="guardar" href="${c.vcf}"${android ? ` download="${esc(c.archivo)}"` : ""}>${ICO.guardar}<span>Guardar contacto</span></a>
+        ${c.asunto ? `<a class="enviar" href="${correo}">${ICO.enviar}<span>Enviar currículum</span></a>` : ""}</div></div>`);
     const f = ven.querySelector(".ficha"), girar = () => f.classList.toggle("vuelta");
     f.addEventListener("click", (e) => { if (!e.target.closest("a")) girar(); });
     f.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); girar(); } });
