@@ -128,3 +128,57 @@ footer p{font-size:12px;color:var(--muted);margin-top:18px}
 .cargando{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#bdf1ff;font:700 14px "Sora";pointer-events:none}
 .cargando span{width:40px;height:40px;border-radius:50%;border:3px solid rgba(57,230,255,.25);border-top-color:var(--cyan);animation:gira 1s linear infinite}
 @keyframes gira{to{transform:rotate(360deg)}}
+
+/* ---------- Contacto (21 nov 2026): botón en la portada y ventana con la tarjeta de presentación que gira ---------- */
+.contacto{display:flex;align-items:center;gap:14px;margin-top:12px;padding:13px 16px;border-radius:14px;background:#fff;text-decoration:none;color:var(--brand);
+  border-left:6px solid var(--cyan);box-shadow:0 8px 22px rgba(16,32,60,.1)}
+.contacto .ic{width:44px;height:44px;flex:0 0 auto;border-radius:12px;background:linear-gradient(160deg,#0a47a9,#06112b);color:#fff;display:flex;align-items:center;justify-content:center}
+.contacto .ic svg{width:26px;height:26px}
+.contacto .tx{flex:1;min-width:0}
+.contacto b{display:block;font-family:"Sora";font-weight:800;font-size:15px;letter-spacing:.03em}
+.contacto small{display:block;font-size:12.5px;color:var(--muted)}
+
+.ventana .cuerpo.ficha-cuerpo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px 14px 20px;overflow:hidden;
+  background:linear-gradient(160deg,#0a47a9 0%,#132a66 45%,#06112b 100%)}
+.ventana .cuerpo.ficha-cuerpo .pista{padding:0;color:#bfe9ff}
+.escena{perspective:1600px}
+/* la tarjeta: lo más grande que quepa (ancho y alto), proporción 55 x 100 */
+.ficha{--w:min(84vw,calc((100dvh - 250px) * .55),430px);--u:calc(var(--w) / 100);width:var(--w);aspect-ratio:55/100;cursor:pointer;outline:none;
+  -webkit-tap-highlight-color:transparent}
+@supports not (height:100dvh){.ficha{--w:min(84vw,calc((100vh - 270px) * .55),430px)}}
+.giro{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.2,1)}
+.ficha.vuelta .giro{transform:rotateY(180deg)}
+.cara{position:absolute;inset:0;border-radius:calc(var(--u)*3);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);background:#eceef1}
+.cara.reverso{transform:rotateY(180deg)}
+.cara .deco{position:absolute;inset:0;width:100%;height:100%}
+.cara>*:not(.deco){position:absolute}
+.cara .av{top:4.5%;left:33.5%;width:33%;filter:drop-shadow(0 calc(var(--u)*1) calc(var(--u)*1.6) rgba(20,30,60,.3))}
+.cara .marca{top:21.5%;left:0;right:0;text-align:center;color:#232b45;font-family:"Sora";line-height:1.1}
+.cara .marca b{display:block;font-weight:800;font-size:calc(var(--u)*11.2);letter-spacing:.045em}
+.cara .marca span{display:block;font-weight:700;font-size:calc(var(--u)*5.6);margin-top:calc(var(--u)*1.2)}
+.persona{top:55%;left:5%;right:5%;text-align:center;color:#fff}
+.persona h3{font-family:"Archivo";font-stretch:82%;font-weight:800;font-size:calc(var(--u)*10.6);line-height:1;letter-spacing:.005em}
+.persona p{font-size:calc(var(--u)*5);color:#d9deea;margin-top:calc(var(--u)*1.6);padding-bottom:calc(var(--u)*2.8);border-bottom:1px solid rgba(120,170,225,.6);
+  margin-left:4%;margin-right:4%}
+.datos{list-style:none;top:69.5%;left:7%;right:5%;display:flex;flex-direction:column;gap:calc(var(--u)*3.4)}
+.datos li{display:flex;align-items:center;gap:calc(var(--u)*4.4);color:#fff;font-size:calc(var(--u)*4.3);line-height:1.25}
+.datos .ic{width:calc(var(--u)*8.6);height:calc(var(--u)*8.6);flex:0 0 auto;border-radius:50%;background:#2f6dbf;display:flex;align-items:center;justify-content:center}
+.datos .ic svg{width:58%;height:58%;color:#fff}
+.datos a,.datos span{color:#fff;text-decoration:none;min-width:0;overflow-wrap:anywhere}
+.qrc{top:37.5%;left:18%;width:64%;aspect-ratio:1;background:#fff;padding:calc(var(--u)*3.4);border-radius:calc(var(--u)*2.4);
+  box-shadow:0 0 calc(var(--u)*5) rgba(60,140,220,.35)}
+.qrc img{width:100%;height:100%;display:block;image-rendering:pixelated}
+.qrc i{position:absolute;width:calc(var(--u)*7);height:calc(var(--u)*7);border:calc(var(--u)*.9) solid #1b2240}
+.qrc i:nth-child(2){top:calc(var(--u)*-1);left:calc(var(--u)*-1);border-right:0;border-bottom:0;border-top-left-radius:calc(var(--u)*2.4)}
+.qrc i:nth-child(3){top:calc(var(--u)*-1);right:calc(var(--u)*-1);border-left:0;border-bottom:0;border-top-right-radius:calc(var(--u)*2.4)}
+.qrc i:nth-child(4){bottom:calc(var(--u)*-1);left:calc(var(--u)*-1);border-right:0;border-top:0;border-bottom-left-radius:calc(var(--u)*2.4)}
+.qrc i:nth-child(5){bottom:calc(var(--u)*-1);right:calc(var(--u)*-1);border-left:0;border-top:0;border-bottom-right-radius:calc(var(--u)*2.4)}
+.cara .web{bottom:3.6%;left:0;right:0;text-align:center;color:#fff;font-family:"Sora";font-weight:600;font-size:calc(var(--u)*5.4);letter-spacing:.07em}
+.acciones{display:flex;gap:10px;width:min(100%,430px)}
+.acciones>*{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:14px;font-family:"Sora";font-weight:800;font-size:14px;
+  text-decoration:none;white-space:nowrap}
+.acciones svg{width:22px;height:22px;flex:0 0 auto}
+.acciones .girar{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.acciones .guardar{background:var(--cyan);color:var(--deep);box-shadow:0 10px 24px rgba(56,198,255,.35)}
+.datos li.dir{font-size:calc(var(--u)*3.75);line-height:1.2}

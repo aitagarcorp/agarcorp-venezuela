@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:MARIN;RICHARD;;;
+FN:RICHARD MARIN
+ORG:Agarcorp de Venezuela\, C.A.
+TITLE:Operations Manager
+TEL;TYPE=CELL,VOICE:+584249405478
+EMAIL;TYPE=INTERNET,WORK:richard.marin@agarven.com
+URL:https://www.agarven.com
+ADR;TYPE=WORK:;;Avenida Jesús Subero entre calles #12 y #13 Galpón #01;El Tigre;Anzoátegui;6050;Venezuela
+END:VCARD

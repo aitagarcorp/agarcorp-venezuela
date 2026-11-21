@@ -2,7 +2,7 @@
 // Lee window.SITIO (datos.js) y dibuja: portada, secciones (como el panel de la tablet) y ventanas para ver
 // documentos, videos y hologramas. Rutas con # para que el botón Atrás del teléfono funcione:
 //   #/            portada            #/n/<id>   sección (división, marca, producto)
-//   #/d/<id>      documento          #/v/<id>   video          #/h/<id>   holograma
+//   #/d/<id>      documento          #/v/<id>   video          #/h/<id>   holograma          #/c/<id>   tarjeta de contacto
 (function () {
   const S = window.SITIO, $ = (q) => document.querySelector(q);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -12,6 +12,16 @@
     bajar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     atras: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     play: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="rgba(6,17,43,.55)"/><path d="M10 8l6 4-6 4z" fill="currentColor"/></svg>',
+    girar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M18.5 2.8v4.1h-4.1M5.5 21.2v-4.1h4.1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    guardar: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M19 8v6M16 11h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    tarjeta: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="10.5" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 16c.6-1.6 1.9-2.4 3.5-2.4s2.9.8 3.5 2.4M14.5 10h4M14.5 13.5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  };
+  // íconos de los datos de la tarjeta de contacto (en círculos azules, como la impresa)
+  const ICOC = {
+    mail: '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M4.5 7l7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>',
+    tel: '<svg viewBox="0 0 24 24"><path d="M6.6 3.5l2.9 3.4-1.8 2.3c1.1 2.4 3 4.3 5.3 5.4l2.3-1.8 3.4 2.9-1.3 3c-.3.6-1 1-1.7.9C9.4 18.9 5.1 14.6 4.4 8.3c-.1-.7.3-1.4.9-1.7z" fill="currentColor"/></svg>',
+    web: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3.5c2.6 2.6 3.6 5.4 3.6 8.5s-1 5.9-3.6 8.5c-2.6-2.6-3.6-5.4-3.6-8.5S9.4 6.1 12 3.5z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+    pin: '<svg viewBox="0 0 24 24"><path d="M12 2.5a7 7 0 0 0-7 7c0 5 7 12 7 12s7-7 7-12a7 7 0 0 0-7-7z" fill="currentColor"/><circle cx="12" cy="9.5" r="2.6" fill="#141b33"/></svg>',
   };
   const app = $("#app"), ven = $("#ventana");
 
@@ -46,11 +56,39 @@
     }).join("");
   }
 
+  // ------------------------------------------------------------------ tarjeta de contacto (21 nov 2026)
+  // Copia de la tarjeta impresa: frente con nombre y datos, reverso con el QR (vCard: escanearlo guarda el contacto).
+  // Dibujo en un lienzo de 550 x 1000 (proporción de la tarjeta vertical); los textos se miden con --u (1 % del ancho).
+  const MARINO = '<linearGradient id="marino" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2752"/><stop offset="1" stop-color="#121833"/></linearGradient>'
+    + '<radialGradient id="luz" cx=".5" cy=".3" r=".65"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e4e7ec"/></radialGradient>';
+  const decoArriba = '<rect width="550" height="1000" fill="url(#luz)"/>'
+    + '<polygon points="0,52 182,30 186,46 0,68" fill="#3d9fd9"/><polygon points="0,76 196,52 202,74 0,98" fill="#2c5ba6"/>'
+    + '<polygon points="0,98 202,74 226,170 0,196" fill="#1b2240"/><polygon points="0,206 236,178 238,188 0,216" fill="#3d9fd9"/>'
+    + '<polygon points="380,22 550,4 550,20 382,38" fill="#3d9fd9"/><polygon points="352,60 550,38 550,58 356,80" fill="#2c5ba6"/>'
+    + '<polygon points="356,80 550,58 550,150 378,170" fill="#1b2240"/><polygon points="384,180 550,162 550,172 386,190" fill="#3d9fd9"/>';
+  const lienzo = (abajo) => `<svg class="deco" viewBox="0 0 550 1000" preserveAspectRatio="none" aria-hidden="true"><defs>${MARINO}</defs>${decoArriba}${abajo}</svg>`;
+  const marca = '<img class="av" src="img/av.png" alt="Agarcorp de Venezuela"><div class="marca"><b>AGARCORP</b><span>De Venezuela, C.A.</span></div>';
+  function fichaContacto(c) {
+    const frente = lienzo('<polygon points="0,452 550,372 550,386 0,466" fill="#49a6dd"/><polygon points="0,472 550,392 550,436 0,516" fill="#2c5ba6"/>'
+      + '<polygon points="0,516 550,436 550,1000 0,1000" fill="url(#marino)"/>');
+    const reverso = lienzo('<polygon points="0,846 550,770 550,782 0,858" fill="#49a6dd"/><polygon points="0,866 550,790 550,822 0,898" fill="#2c5ba6"/>'
+      + '<polygon points="0,898 550,822 550,1000 0,1000" fill="url(#marino)"/>');
+    const fila = (ico, txt, href) => `<li${ico === "pin" ? ' class="dir"' : ""}><span class="ic">${ICOC[ico]}</span>${href ? `<a href="${href}"${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ""}>${esc(txt)}</a>` : `<span>${esc(txt)}</span>`}</li>`;
+    const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.dir);
+    return `<div class="ficha" tabindex="0" role="button" aria-label="Tarjeta de ${esc(c.nombreTc)}: toque para girarla"><div class="giro">
+      <div class="cara frente">${frente}${marca}<div class="persona"><h3>${esc(c.nombre)}</h3><p>${esc(c.cargo)}</p></div>
+        <ul class="datos">${fila("mail", c.email, "mailto:" + c.email)}${fila("tel", c.tel, c.telHref)}${fila("web", c.web, c.url)}${fila("pin", c.dir, mapa)}</ul></div>
+      <div class="cara reverso">${reverso}${marca}<div class="qrc"><img src="${c.qr}" alt="Código QR: guarda el contacto de ${esc(c.nombreTc)}"><i></i><i></i><i></i><i></i></div>
+        <div class="web">${esc(c.web)}</div></div></div></div>`;
+  }
+  const botonesContacto = () => (S.contactos || []).map((c) => `<a class="contacto" href="#/c/${encodeURIComponent(c.id)}"><span class="ic">${ICO.tarjeta}</span>
+    <span class="tx"><b>Contacto</b><small>${esc(c.nombreTc)} · ${esc(c.cargo)}</small></span>${ICO.flecha}</a>`).join("");
+
   // ------------------------------------------------------------------ páginas
   function portada() {
     let h = `<header class="hero"><div class="logo"><img src="img/logo-agarcorp.png" alt="Agarcorp de Venezuela"></div>
       <h1>Agarcorp de Venezuela C.A.</h1><h2>Fabricantes Especialistas en Medición y Control de Procesos</h2>
-      <div class="chip">EXPO VENEZUELA ORIENTE 2026 <b>STAND 65</b></div></header><main>${bajarPrincipal()}
+      <div class="chip">EXPO VENEZUELA ORIENTE 2026 <b>STAND 65</b></div></header><main>${bajarPrincipal()}${botonesContacto()}
       <h2 class="tit">Nuestras Divisiones</h2><section class="divs">${divisiones()}</section>`;
     if (S.inicioDocs.length) h += `<h2 class="tit">${S.inicioDocs.length === 1 ? "Presentación" : "Presentaciones"}</h2><section class="lista">${S.inicioDocs.map((id) => itemDoc(id, S.inicioDocs.length === 1)).join("")}</section>`;
     if (S.holos.length) h += `<h2 class="tit">Vistas Holográficas <span>3D interactivo</span></h2><section class="grilla">${S.holos.map((x) =>
@@ -120,15 +158,31 @@
     return true;
   }
 
+  function verContacto(id) {
+    const c = (S.contactos || []).find((x) => x.id === id); if (!c) return false;
+    // Guardar contacto = el mismo .vcf que guarda el QR. En Android se descarga y se abre con Contactos; en iPhone, al abrirlo
+    // (sin "download") Safari muestra la ficha con "Crear contacto nuevo".
+    const android = /Android/i.test(navigator.userAgent);
+    abrirVentana(barraVentana("Contacto", `${c.nombreTc} · ${c.cargo}`) + `<div class="cuerpo ficha-cuerpo"><div class="escena">${fichaContacto(c)}</div>
+      <p class="pista">Toque la tarjeta para girarla</p>
+      <div class="acciones"><button class="girar" type="button">${ICO.girar}<span>Girar tarjeta</span></button>
+        <a class="guardar" href="${c.vcf}"${android ? ` download="${esc(c.archivo)}"` : ""}>${ICO.guardar}<span>Guardar contacto</span></a></div></div>`);
+    const f = ven.querySelector(".ficha"), girar = () => f.classList.toggle("vuelta");
+    f.addEventListener("click", (e) => { if (!e.target.closest("a")) girar(); });
+    f.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); girar(); } });
+    ven.querySelector(".girar").addEventListener("click", girar);
+    return true;
+  }
+
   // ------------------------------------------------------------------ rutas
   let pagina = null;   // ruta de la página de abajo (sin ventana)
   function ruta() {
-    const h = location.hash || "#/", m = /^#\/(n|d|v|h)\/(.+)$/.exec(h), tipo = m && m[1], id = m && decodeURIComponent(m[2]);
-    if (tipo === "d" || tipo === "v" || tipo === "h") {
+    const h = location.hash || "#/", m = /^#\/(n|d|v|h|c)\/(.+)$/.exec(h), tipo = m && m[1], id = m && decodeURIComponent(m[2]);
+    if (tipo === "d" || tipo === "v" || tipo === "h" || tipo === "c") {
       const directo = pagina === null;
       if (directo) { pagina = S.volverDe(tipo, id); dibujar(pagina); }   // entró directo a una ventana (enlace compartido)
       quitarVentana(); ven.dataset.vuelta = pagina; ven.dataset.directo = directo ? "1" : "";
-      const ok = tipo === "d" ? verDoc(id) : tipo === "v" ? verVideo(id) : verHolo(id);
+      const ok = tipo === "d" ? verDoc(id) : tipo === "v" ? verVideo(id) : tipo === "c" ? verContacto(id) : verHolo(id);
       if (!ok) location.hash = pagina;
       return;
     }
