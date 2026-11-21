@@ -61,11 +61,19 @@
   // Dibujo en un lienzo de 550 x 1000 (proporción de la tarjeta vertical); los textos se miden con --u (1 % del ancho).
   const MARINO = '<linearGradient id="marino" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2752"/><stop offset="1" stop-color="#121833"/></linearGradient>'
     + '<radialGradient id="luz" cx=".5" cy=".3" r=".65"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e4e7ec"/></radialGradient>';
+  // franjas de arriba medidas sobre la foto de la tarjeta impresa (21 nov 2026), de arriba abajo en cada lado:
+  // barra celeste, bloque azul, bloque marino grande (borde inclinado) y barra celeste, separados por líneas blancas finas.
+  // Izquierda: el azul es corto y el marino sobresale a la derecha. Derecha: la barra celeste de arriba es larga, el azul
+  // corto pegado al borde, el marino sale más hacia el centro y la celeste de abajo es corta.
   const decoArriba = '<rect width="550" height="1000" fill="url(#luz)"/>'
-    + '<polygon points="0,52 182,30 186,46 0,68" fill="#3d9fd9"/><polygon points="0,76 196,52 202,74 0,98" fill="#2c5ba6"/>'
-    + '<polygon points="0,98 202,74 226,170 0,196" fill="#1b2240"/><polygon points="0,206 236,178 238,188 0,216" fill="#3d9fd9"/>'
-    + '<polygon points="380,22 550,4 550,20 382,38" fill="#3d9fd9"/><polygon points="352,60 550,38 550,58 356,80" fill="#2c5ba6"/>'
-    + '<polygon points="356,80 550,58 550,150 378,170" fill="#1b2240"/><polygon points="384,180 550,162 550,172 386,190" fill="#3d9fd9"/>';
+    + '<polygon points="0,55 122,39 125,52 0,69" fill="#3ea2d6"/>'
+    + '<polygon points="0,73 75,63 80,97 0,107" fill="#3557a8"/>'
+    + '<polygon points="0,111 113,97 141,185 0,203" fill="#262c4c"/>'
+    + '<polygon points="0,210 102,196 105,208 0,223" fill="#3ea2d6"/>'
+    + '<polygon points="387,15 550,0 550,13 389,28" fill="#3ea2d6"/>'
+    + '<polygon points="441,25 550,15 550,46 446,56" fill="#3557a8"/>'
+    + '<polygon points="387,70 550,50 550,138 417,156" fill="#262c4c"/>'
+    + '<polygon points="446,158 550,145 550,158 449,171" fill="#3ea2d6"/>';
   const lienzo = (abajo) => `<svg class="deco" viewBox="0 0 550 1000" preserveAspectRatio="none" aria-hidden="true"><defs>${MARINO}</defs>${decoArriba}${abajo}</svg>`;
   const marca = '<img class="av" src="img/av.png" alt="Agarcorp de Venezuela"><div class="marca"><b>AGARCORP</b><span>De Venezuela, C.A.</span></div>';
   function fichaContacto(c) {
